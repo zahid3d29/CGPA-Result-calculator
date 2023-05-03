@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Simple javascript calculator for freelancer</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+            crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <style>
+            /* Style the tab */
+            .tab, 
+            .tab-right,
+            .tab-middle {
+              overflow: hidden;
+              border: 1px solid #ccc;
+              background-color: #f1f1f1;
+            }
+            .tab {
+                float: left;
+                width: 40%;
+            }
+            .tab-middle {
+                width: 20%;
+                display: block;
+                float: left;
+                text-align: center;
+            }
+            .tab-right {
+              width: 40%;
+              display: block;
+            }
+            
+            /* Style the buttons inside the tab */
+            .tab button,
+            .tab-right button,
+            .tab-middle button {
+              background-color: inherit;
+              border: none;
+              outline: none;
+              cursor: pointer;
+              padding: 14px 16px;
+              transition: 0.3s;
+              font-size: 17px;
+            }
+
+            .tab-right button{
+                float: right;
+            }
+            button#tab-title,
+            button#tab-right-title {
+                background: #31b0d5;
+                text-transform: uppercase;
+                font-weight: 900;
+                color: #000;
+            } 
+            /* Change background color of buttons on hover */
+            .tab button:hover,
+            .tab-right button:hover,
+            .tab-middle button:hover {
+              background-color: #ddd;
+            }
+            
+            /* Create an active/current tablink class */
+            .tab .active,
+            .tab-right .active,
+            .tab-middle .active {
+              background-color: #f0ad4e;
+            }
+            
+            /* Style the tab content */
+            .courseContent,
+            .openYearContent {
+              display: none;
+              padding: 0px 0px;
+              border: 10px solid #31b0d5;
+              border-top: none;
+            }
+        </style>
+
+    </head>
+<body>
+   
+    <div class="container-fluid px-0">
+        <div class="row">
+            <div class="col-12">
+
+                <div class="tab">
+                    <button class="courseTablinks" id="tab-title">Select Course</button>
+                    <button class="courseTablinks" onclick="openCourse(event, 'yearBA')" id="defaultOpenCourse">BA</button>
+                    <button class="courseTablinks" onclick="openCourse(event, 'yearBA')" id="defaultOpenCourseOne">BSC</button>
+                    <button class="courseTablinks" onclick="openCourse(event, 'yearBA')" id="defaultOpenCourseTwo">BSS</button>
+                </div>
+
+                <div class="tab-middle">
+                    <button class="courseTabMiddle" onclick="openType(event, 'yearBA')" id="defaultOpenGrade">Grade</button>
+                    <button class="courseTabMiddle" onclick="openType(event, 'yearBA')" id="defaultOpenPoints">Points</button>
+                </div>
+
+                <div class="tab-right">
+                    <button class="openYearTablinks" id="tab-right-title">Select Year</button>
+                    <button class="openYearTablinks" onclick="openYear(event, 'yearBA')" id="defaultOpenYear">1<sup>st</sup>Year</button>
+                    <button class="openYearTablinks" id="btn-tyear" onclick="openYear(event, 'yearBA')">2<sup>nd</sup> Year</button>
+                    <button class="openYearTablinks" id="btn-thyear" onclick="openYear(event, 'yearBA')">3<sup>rd</sup> Year</button>
+                </div>
+
+                <div id="yearBA" class="openYearContent">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12 col-sm-12 px-0">
+                                <div class="result">
+                                    <!-- study calc  -->
+                                    <form id="studyForm" method="POST">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <input type="text" id="compulsory-subject1" class="subject-select" value="History of ... Bangladesh" disabled>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select name="mandatory-sub" id="mandatory-sub" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="mandatory-sub-points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <select name="sub_one" id="sub_one" class="form-control subject-select">
+                                                            <option value="Economics">Economics</option>
+                                                            <option value="PoliticalScience">PoliticalScience</option>
+                                                            <option value="ociology">Sociology</option>
+                                                            <option value="SocialWork">Social Work</option>
+                                                        </select>
+                                                    </div>
+                                                    <select name="sub_one" id="sub_one_copy" class="form-control subject-select" style="display: none;">
+                                                        <option value="Economics">Economics</option>
+                                                        <option value="PoliticalScience">PoliticalScience</option>
+                                                        <option value="ociology">Sociology</option>
+                                                        <option value="SocialWork">Social Work</option>
+                                                    </select>
+                                                    <select name="sub_one" id="sub_one2" class="form-control subject-select" style="display: none;">
+                                                        <option value="Physics">Physics</option>
+                                                        <option value="Math">Math</option>
+                                                        <option value="Bootany">Bootany</option>
+                                                        <option value="Zoology">Zoology</option>
+                                                    </select>
+                                                    <select name="sub_one" id="sub_one3" class="form-control subject-select" style="display: none;">
+                                                        <option value="Economics">Accounting</option>
+                                                        <option value="PoliticalScience">Management</option>
+                                                    </select>
+                                                    <div class="form-group">
+                                                        <label for="year-one">1<sup>st</sup> Paper
+                                                        </label><br>
+                                                        <select name="sub_one_part_one" id="sub_one_part_one" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="sub_one_part_one_points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="year-two">2<sup>nd</sup> Paper
+                                                        </label><br>
+                                                        <select name="sub_one_part_two" id="sub_one_part_two" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="sub_one_part_two_points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <select name="sub_two" id="sub_two" class="form-control subject-select">
+                                                            <option value="PoliticalScience">PoliticalScience</option>
+                                                            <option value="Economics">Economics</option>
+                                                            <option value="ociology">Sociology</option>
+                                                            <option value="SocialWork">Social Work</option>
+                                                        </select>
+                                                    </div>
+                                                    <select name="sub_two" id="sub_two_copy" class="form-control subject-select" style="display: none;">
+                                                        <option value="PoliticalScience">PoliticalScience</option>
+                                                        <option value="Economics">Economics</option>
+                                                        <option value="ociology">Sociology</option>
+                                                        <option value="SocialWork">Social Work</option>
+                                                    </select>
+                                                    <select name="sub_two" id="sub_two2" class="form-control subject-select" style="display: none;">
+                                                        <option value="Math">Math</option>
+                                                        <option value="Physics">Physics</option>
+                                                        <option value="Bootany">Bootany</option>
+                                                        <option value="Zoology">Zoology</option>
+                                                    </select>
+                                                    <select name="sub_two" id="sub_two3" class="form-control subject-select" style="display: none;">
+                                                        <option value="PoliticalScience">Accounting</option>
+                                                        <option value="Economics">Management</option>
+                                                    </select>
+                                                    <div class="form-group">
+                                                        <label for="year-three">1<sup>st</sup> Paper
+                                                        </label><br>
+                                                        <select name="sub_two_part_one" id="sub_two_part_one" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="sub_two_part_one_points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="year-four">2<sup>nd</sup> Paper
+                                                        </label><br>
+                                                        <select name="sub_two_part_two" id="sub_two_part_two" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="sub_two_part_two_points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="form-group">
+                                                        <select name="sub_three" id="sub_three" class="form-control subject-select">
+                                                            <option value="SocialWork">Social Work</option>
+                                                            <option value="Economics">Economics</option>
+                                                            <option value="PoliticalScience">PoliticalScience</option>
+                                                            <option value="ociology">Sociology</option>
+                                                        </select>
+                                                    </div>
+                                                    <select name="sub_three" id="sub_three_copy" class="form-control subject-select" style="display: none;">
+                                                        <option value="SocialWork">Social Work</option>
+                                                        <option value="Economics">Economics</option>
+                                                        <option value="PoliticalScience">PoliticalScience</option>
+                                                        <option value="ociology">Sociology</option>
+                                                    </select>
+                                                    <select name="sub_three" id="sub_three2" class="form-control subject-select" style="display: none;">
+                                                        <option value="Chemistry">Chemistry</option>
+                                                        <option value="Statistics">Statistics</option>
+                                                        <option value="Bootany">Bootany</option>
+                                                        <option value="Zoology">Zoology</option>
+                                                        <option value="Others">Others</option>
+                                                    </select>
+                                                    <select name="sub_three" id="sub_three3" class="form-control subject-select" style="display: none;">
+                                                        <option value="SocialWork">Finanace & banking</option>
+                                                        <option value="Economics">Marketing</option>
+                                                        <option value="PoliticalScience">Other</option>
+                                                    </select>
+                                                    <div class="form-group">
+                                                        <label for="year-five">1<sup>st</sup> Paper
+                                                        </label><br>
+                                                        <select name="sub_three_part_one" id="sub_three_part_one" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="sub_three_part_one_points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="year-six">2<sup>nd</sup> Paper
+                                                        </label><br>
+                                                        <select name="sub_three_part_two" id="sub_three_part_two" class="form-control">
+                                                            <option value="" selected="">Select Grade</option>
+                                                            <option value="4">A+</option>
+                                                            <option value="3.75">A</option>
+                                                            <option value="3.5">A-</option>
+                                                            <option value="3.25">B+</option>
+                                                            <option value="3">B</option>
+                                                            <option value="2.75">B-</option>
+                                                            <option value="2.5">C+</option>
+                                                            <option value="2.25">C</option>
+                                                            <option value="2">D</option>
+                                                            <option value="0">F</option>
+                                                        </select>
+                                                        <input type="number" id="sub_three_part_two_points" class="form-control" min="1" max="4" style="display: none;">
+                                                    </div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <h3 id="showResult"></h3>
+                                                    <h3 id="showGPA"></h3>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input type="submit" class="btn btn-warning" id="exampleInputPassword1" value="Calculate">
+                                            </div>
+                                        </div>
+                
+                                    </form>
+                                    
+                                </div><!-- Blackboard-->  
+                            </div><!--col-->
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div><!--row -->
+    </div> <!--container -->
+
+
+
+   
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="main.js"></script>
+
+
+    <script>
+        function openCourse(evt, courseName) {
+            var i, courseContent, courseTablinks;
+            courseContent = document.getElementsByClassName("courseContent");
+            for (i = 0; i < courseContent.length; i++) {
+                courseContent[i].style.display = "none";
+            }
+            courseTablinks = document.getElementsByClassName("courseTablinks");
+            for (i = 0; i < courseTablinks.length; i++) {
+                courseTablinks[i].className = courseTablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(courseName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpenCourse").click();
+    </script>
+
+    <script>
+        function openType(evt, courseName) {
+            var i, courseContent, courseTabMiddle;
+            courseContent = document.getElementsByClassName("courseContent");
+            for (i = 0; i < courseContent.length; i++) {
+                courseContent[i].style.display = "none";
+            }
+            courseTabMiddle = document.getElementsByClassName("courseTabMiddle");
+            for (i = 0; i < courseTabMiddle.length; i++) {
+                courseTabMiddle[i].className = courseTabMiddle[i].className.replace(" active", "");
+            }
+            document.getElementById(courseName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        // Get the element with id="defaultOpen" and click on it
+        document.getElementById("defaultOpenGrade").click();
+    </script>
+
+    <script>
+        function openYear(evt, openYearName) {
+            var i, openYearContent, openYearTablinks;
+            openYearContent = document.getElementsByClassName("openYearContent");
+            for (i = 0; i < openYearContent.length; i++) {
+                openYearContent[i].style.display = "none";
+            }
+            openYearTablinks = document.getElementsByClassName("openYearTablinks");
+            for (i = 0; i < openYearTablinks.length; i++) {
+                openYearTablinks[i].className = openYearTablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(openYearName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        
+        // Get the element with id="defaultOpenYear" and click on it
+        document.getElementById("defaultOpenYear").click();
+    </script>
+
+    <script>
+
+        $('#defaultOpenYear').click(function(){
+            $('label[for="year-one"]').html("<label for='year-one'>1<sup>st</sup> Paper</label>");
+            $('label[for="year-two"]').html("<label for='year-two'>2<sup>nd</sup> Paper</label>");
+            $('label[for="year-three"]').html("<label for='year-three'>1<sup>st</sup> Paper</label>");
+            $('label[for="year-four"]').html("<label for='year-four'>2<sup>nd</sup> Paper</label>");
+            $('label[for="year-five"]').html("<label for='year-five'>1<sup>st</sup> Paper</label>");
+            $('label[for="year-six"]').html("<label for='year-six'>2<sup>nd</sup> Paper</label>");
+
+            $("#compulsory-subject1").val("History of ... Bangladesh");
+
+        });
+
+        $('#btn-tyear').click(function(){
+            $('label[for="year-one"]').html("<label for='year-one'>3<sup>rd</sup> Paper</label>");
+            $('label[for="year-two"]').html("<label for='year-two'>4<sup>th</sup> Paper</label>");
+            $('label[for="year-three"]').html("<label for='year-three'>3<sup>rd</sup> Paper</label>");
+            $('label[for="year-four"]').html("<label for='year-four'>4<sup>th</sup> Paper</label>");
+            $('label[for="year-five"]').html("<label for='year-five'>3<sup>rd</sup> Paper</label>");
+            $('label[for="year-six"]').html("<label for='year-six'>4<sup>th</sup> Paper</label>");
+
+            $("#compulsory-subject1").val("Bengali National Language");            
+        });
+
+
+        $('#btn-thyear').click(function(){
+            $('label[for="year-one"]').html("<label for='year-one'>5<sup>th</sup> Paper</label>");
+            $('label[for="year-two"]').html("<label for='year-two'>6<sup>th</sup> Paper</label>");
+            $('label[for="year-three"]').html("<label for='year-three'>5<sup>th</sup> Paper</label>");
+            $('label[for="year-four"]').html("<label for='year-four'>6<sup>th</sup> Paper</label>");
+            $('label[for="year-five"]').html("<label for='year-five'>5<sup>th</sup> Paper</label>");
+            $('label[for="year-six"]').html("<label for='year-six'>6<sup>th</sup> Paper</label>");
+
+            $("#compulsory-subject1").val("English");
+        });
+
+
+
+        // Course Tab Button 
+        $('#defaultOpenCourse').click(function(){
+            $("#sub_one").html($("#sub_one_copy").html());
+            $("#sub_two").html($("#sub_two_copy").html());
+            $("#sub_three").html($("#sub_three_copy").html());
+        });
+        $('#defaultOpenCourseOne').click(function(){
+            $("#sub_one").html($("#sub_one2").html());
+            $("#sub_two").html($("#sub_two2").html());
+            $("#sub_three").html($("#sub_three2").html());
+        });
+        $('#defaultOpenCourseTwo').click(function(){
+            $("#sub_one").html($("#sub_one3").html());
+            $("#sub_two").html($("#sub_two3").html());
+            $("#sub_three").html($("#sub_three3").html());
+        });
+
+
+        // Grade Replacing by Points
+        $('#defaultOpenGrade').click(function(){
+            $("#mandatory-sub").css("display", "block");
+            $("#sub_one_part_one").css("display", "block");
+            $("#sub_one_part_two").css("display", "block");
+            $("#sub_two_part_one").css("display", "block");
+            $("#sub_two_part_two").css("display", "block");
+            $("#sub_three_part_one").css("display", "block");
+            $("#sub_three_part_two").css("display", "block");
+
+            $("#mandatory-sub-points").css("display", "none");
+            $("#sub_one_part_one_points").css("display", "none");
+            $("#sub_one_part_two_points").css("display", "none");
+            $("#sub_two_part_one_points").css("display", "none");
+            $("#sub_two_part_two_points").css("display", "none");
+            $("#sub_three_part_one_points").css("display", "none");
+            $("#sub_three_part_two_points").css("display", "none");
+        });
+
+        $('#defaultOpenPoints').click(function(){
+            $("#mandatory-sub-points").css("display", "block");
+            $("#sub_one_part_one_points").css("display", "block");
+            $("#sub_one_part_two_points").css("display", "block");
+            $("#sub_two_part_one_points").css("display", "block");
+            $("#sub_two_part_two_points").css("display", "block");
+            $("#sub_three_part_one_points").css("display", "block");
+            $("#sub_three_part_two_points").css("display", "block");
+
+            $("#mandatory-sub").css("display", "none");
+            $("#sub_one_part_one").css("display", "none");
+            $("#sub_one_part_two").css("display", "none");
+            $("#sub_two_part_one").css("display", "none");
+            $("#sub_two_part_two").css("display", "none");
+            $("#sub_three_part_one").css("display", "none");
+            $("#sub_three_part_two").css("display", "none");
+
+        });
+    </script>
+
+
+</body>
+</html>
